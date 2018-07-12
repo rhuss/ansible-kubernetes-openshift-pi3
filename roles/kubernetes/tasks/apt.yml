@@ -8,3 +8,20 @@
     - kubeadm={{ k8s.version }}
     - kubectl={{ k8s.version }}
     - kubernetes-cni
+
+- name: apt | Download critctl
+  get_url:
+    url: https://github.com/kubernetes-incubator/cri-tools/releases/download/{{ critools.version }}/crictl-{{ critools.version }}-linux-arm.tar.gz
+    dest: /tmp/crictl.tar.gz
+
+- name: apt | Extract crictl
+  unarchive:
+    src: /tmp/crictl.tar.gz
+    dest: /usr/local/bin
+    mode: 0755
+    remote_src: yes
+
+- name: apt | Cleanup
+  file:
+    path: /tmp/crictl.tar.gz
+    state: absent

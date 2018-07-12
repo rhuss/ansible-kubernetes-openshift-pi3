@@ -5,7 +5,8 @@
   file: path=/var/lib/kubelet/pki state=absent
 
 - name: kubeadm-master | Run kubeadm init on master
-  command: kubeadm init --config /etc/kubernetes/kubeadm.yml
+  command: kubeadm init --config /etc/kubernetes/kubeadm.yml --ignore-preflight-errors=cri
+
   register: kubeadm_init
 
 - name: kubeadm-master | Create a dedicated token from master

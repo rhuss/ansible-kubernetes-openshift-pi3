@@ -108,7 +108,7 @@ metadata:
     k8s-app: traefik-ingress-lb
 spec:
   rules:
-  - host: traefik-ui.pi.local
+  - host: {{ ingress.traefik }}
     http:
       paths:
       - path: /

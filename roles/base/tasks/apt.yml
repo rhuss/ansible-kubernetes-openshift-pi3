@@ -8,7 +8,7 @@
   apt_key: url=https://packages.cloud.google.com/apt/doc/apt-key.gpg
 
 - name: Add Docker Repo Key
-  apt_key: 
+  apt_key:
     id: F76221572C52609D
     keyserver: hkp://keyserver.ubuntu.com:80
 
@@ -18,7 +18,7 @@
 
 - name: Add Docker Repo
   apt_repository: repo='deb [arch=armhf] https://apt.dockerproject.org/repo raspbian-jessie main' state=present
-  
+
 - name: Update APT package cache and upgrade
   apt:
     update_cache: yes
@@ -31,7 +31,6 @@
     force: yes
     state: present
   with_items:
-    - hdparm
     - iperf
     - mtr-tiny
     - bridge-utils

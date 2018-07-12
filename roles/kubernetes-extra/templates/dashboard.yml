@@ -104,7 +104,7 @@ metadata:
     k8s-app: kubernetes-dashboard
 spec:
   rules:
-  - host: dashboard.pi.local
+  - host: {{ ingress.dashboard }}
     http:
       paths:
       - path: /

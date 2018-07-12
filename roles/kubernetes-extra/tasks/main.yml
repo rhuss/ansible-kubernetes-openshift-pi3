@@ -8,8 +8,6 @@
   include_tasks: install_k8s_resource.yml name="{{ item }}"
   become: true
   with_items:
-      - dashboard
-      - heapster
       - traefik
 
 - name: Delete temp directory

@@ -2,3 +2,6 @@ images:
   dashboard: luxas/kubernetes-dashboard:v1.7.1
   heapster: luxas/heapster:v1.4.0
   influxdb: luxas/heapster-influxdb:v1.3.3
+ingress:
+  dashboard: dashboard.pi.cluster
+  traefik: traefik.pi.cluster

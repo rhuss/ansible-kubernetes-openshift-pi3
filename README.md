@@ -38,7 +38,7 @@ Thanks to [Hypriot](https://github.com/hypriot/image-builder-rpi/releases/latest
 
 1. Download the latest Hyoriot image and store it as `hypriot.zip` :
 
-        curl -L https://github.com/hypriot/image-builder-rpi/releases/download/v1.7.1/hypriotos-rpi-v1.7.1.img.zip -o hypriot.zip
+        curl -L https://github.com/hypriot/image-builder-rpi/releases/download/v1.8.0/hypriotos-rpi-v1.8.0.img.zip -o hypriot.zip
 
 2. Install Hypriot's [flash](https://github.com/hypriot/flash) installer script. Follow the directions on the installation page. **Important:** For using the latest Hypriot Images >= 1.7.0 please use the Shell script from the master branch. The latest release 0.2.0 does not yet support the new configuration used by Hypriot 1.7.0. The script must be reachable from within your `$PATH` and it must be executable.
 
@@ -101,20 +101,6 @@ After this initial setup is done, the next step is to initialize the base system
         cp config.yml.example config.yml
         vi config.yml
 
-### Init machine-id
-
-Because of a pecularity of Hypriot OS 1.5 which causes every machine id to be the same,
-`/etc/machine-id` need to be initialized once for each node. This is required later e.g. by
-the Weave overlay network as it calculates its virtual Mac address from this datum.
-
-To do so, call the following Ansible ad-hoc command:
-
-```
-ansible pis -u pirate -k -i hosts --become -m shell --args "dbus-uuidgen > /etc/machine-id"
-```
-
-Use "hypriot" as password here. You can also use the script `tools/init_machine_id.sh`. If you get errors during this command, please check that you don't have stale entries
-
 ### Basic Node Setup
 
 If you have already created a cluster with these playbooks and want to start a fresh, please be sure that you cleanup your `~/.ssh/known_hosts` from the old host keys. The script `tools/cleanup_known_hosts.sh` can be used for this. You should be able to ssh into each of the nodes without warnings. Also you must be able to reach the internet from the nodes.
@@ -140,33 +126,6 @@ The following steps will be applied by this command (which may take a bit):
 
 With this basic setup you have already a working Docker environment.
 
-### Ingress
-
-As ingress controller we use traefik. It will get deployed as part of management playbook and will run as DaemonSet.
-
-To test ingress add `<nodeIPAddress> traefik-ui.pi.local dashboard.pi.local` to your `/etc/hosts` file.
-
-For any other resource you want to export - create ingress resource:
-
-```
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: traefik-web-ui
-  namespace: kube-system
-  labels:
-    k8s-app: traefik-ingress-lb
-spec:
-  rules:
-  - host: traefik-ui.pi.local
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: traefik-service
-          servicePort: admin
-```
-
 ### Kubernetes Setup
 
 The final step for a working Kubernetes cluster is to run
@@ -190,6 +149,31 @@ In case you need a [full cleanup](http://stackoverflow.com/a/41372829/207604) of
     ansible-playbook -i hosts kubernetes-full-reset.yml
 
 This is also needed in case you want to change one of the Pod or Services subnets.
+
+
+### Kubernetes Extras
+
+With the playbook `kubernetes-extra` you can install some extra support apps for Kubernetes:
+
+* A nice Kubernetes Dashboard
+* Heapster and InfluxDB for exposing monitoring information
+* Traefik as Ingress controller which gets deployed as `DaemonSet`.
+
+Apply the playbook with
+
+```
+ansible-playbook -i hosts kubernetes-extra.yml
+```
+
+
+To access the Dashboard and the Traefik UI via the installed Ingress you have
+to add
+
+```
+192.168.23.200 traefik.pi.cluster dashboard.pi.cluster
+```
+
+to `/etc/hosts` on your local machine. Replace the IP adress with one you PI nodes. You can change the route names by changing the defaults in in `roles/kubernetes-extra/defaults/main.yml` or by overwriting it with `--extra-args`.
 
 ### Tools
 

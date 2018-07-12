@@ -1,0 +1,9 @@
+---
+- name: Extra Kubernetes Apps (dashboard, heapster, influxdb, traefik)
+
+  hosts: master
+  remote_user: pi
+  become: true
+
+  roles:
+  - role: kubernetes-extra
