@@ -11,4 +11,4 @@ controllerManagerExtraArgs:
   terminated-pod-gc-threshold: "0"
 apiServerExtraArgs:
   runtime-config: "api/all=true"
-kubernetesVersion: "1.9.4"
+# kubernetesVersion: "{{ k8s.version }}"

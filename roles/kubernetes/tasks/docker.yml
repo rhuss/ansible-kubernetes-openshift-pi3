@@ -13,13 +13,13 @@
     dockerd_extra_args: "{{ ', \"hosts\": [ \"fd://\", \"tcp://0.0.0.0:2375\"]' if docker.expose_tcp else '' }}"
 
 - name: docker | Replace the startup command for Docker
-  lineinfile: 
+  lineinfile:
     dest: /lib/systemd/system/docker.service
     regexp: '^ExecStart'
     line: 'ExecStart=/usr/bin/dockerd'
     state: present
   register: result_service
-  
+
 - name: docker | Update docker service startup
   template: src=docker_daemon.json dest=/etc/docker/daemon.json
   register: result
@@ -28,7 +28,7 @@
 
 - name: docker | Reload systemd when service definition changed
   command: systemctl daemon-reload
-  when: result_service|changed
+  when: result_service is changed
 
 - name: docker | Notify Docker service right now to restart
   meta: flush_handlers

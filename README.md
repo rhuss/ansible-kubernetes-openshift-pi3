@@ -38,7 +38,7 @@ Thanks to [Hypriot](https://github.com/hypriot/image-builder-rpi/releases/latest
 
 1. Download the latest Hyoriot image and store it as `hypriot.zip` :
 
-        curl -L https://github.com/hypriot/image-builder-rpi/releases/download/v1.8.0/hypriotos-rpi-v1.8.0.img.zip -o hypriot.zip
+        curl -L https://github.com/hypriot/image-builder-rpi/releases/download/v1.9.0/hypriotos-rpi-v1.9.0.img.zip -o hypriot.zip
 
 2. Install Hypriot's [flash](https://github.com/hypriot/flash) installer script. Follow the directions on the installation page. **Important:** For using the latest Hypriot Images >= 1.7.0 please use the Shell script from the master branch. The latest release 0.2.0 does not yet support the new configuration used by Hypriot 1.7.0. The script must be reachable from within your `$PATH` and it must be executable.
 

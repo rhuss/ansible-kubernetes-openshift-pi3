@@ -1,5 +1,5 @@
 - name: kubeadm reset
-  command: kubeadm reset
+  command: kubeadm reset -f
 
 #- name: Reset data in etcd
 #  command: etcdctl rm --recursive registry

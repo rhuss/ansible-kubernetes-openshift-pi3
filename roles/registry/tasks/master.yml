@@ -8,8 +8,8 @@
 - name: Remove previous controller & service (but ignore if failing)
   command: kubectl --namespace=kube-system delete rc,svc kube-registry
   ignore_errors: yes
-  when: result|changed
+  when: result is changed
 
 - name: Install registry rc and service
   command: kubectl create -f /etc/kubernetes/registry-rc-svc.yml
-  when: result|changed
+  when: result is changed

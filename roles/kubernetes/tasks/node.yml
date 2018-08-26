@@ -6,7 +6,7 @@
   file: path=/var/lib/kubelet/pki state=absent
 
 - name: kubeadm-node | Run kubeadm join on node
-  command: kubeadm join --token={{ kubeadm_token }} --discovery-token-unsafe-skip-ca-verification master:6443 --ignore-preflight-errors=cri
+  command: kubeadm join --token={{ kubeadm_token }} --discovery-token-unsafe-skip-ca-verification master:6443 --ignore-preflight-errors=all
 
 - name: kubeadm-node | Wait for /etc/kubernetes/kubelet.conf to be created
   wait_for: path=/etc/kubernetes/kubelet.conf
@@ -15,7 +15,9 @@
   copy: remote_src=True src=/etc/kubernetes/kubelet.conf dest=/home/pi/.kube/config owner=pi group=pi
 
 - name: kubeadm-node | Fix permission for kubelet-client.key
-  file: path=/var/lib/kubelet/pki/kubelet-client.key mode="660" group=pi
+  shell: |
+    chgrp pi /var/lib/kubelet/pki/kubelet-client*
+    chmod 660 /var/lib/kubelet/pki/kubelet-client*
 
 - name: kubeadm-node | Fix permission for kubelet.key
   file: path=/var/lib/kubelet/pki/kubelet.key mode="660" group=pi
